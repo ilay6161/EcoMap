@@ -1,9 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.EcoMapApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.EcoMapApp" parent="Base.Theme.EcoMapApp" />
+
+    <!-- Splash screen: full dark green -->
+    <style name="Theme.EcoMapApp.Splash" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/eco_dark_green</item>
+        <item name="android:navigationBarColor">@color/eco_dark_green</item>
+        <item name="android:windowBackground">@color/eco_dark_green</item>
+    </style>
+
+    <!-- Login / Register screens: cream background, light status bar -->
+    <style name="Theme.EcoMapApp.Auth" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/eco_cream_bg</item>
+        <item name="android:navigationBarColor">@color/eco_cream_bg</item>
+        <item name="android:windowBackground">@color/eco_cream_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimary">@color/eco_dark_green</item>
+    </style>
 </resources>

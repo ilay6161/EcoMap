@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- EcoMap brand palette -->
+    <color name="eco_dark_green">#1A3C2E</color>
+    <color name="eco_medium_green">#2D6A4F</color>
+    <color name="eco_light_green_tint">#EAF0EB</color>
+    <color name="eco_cream_bg">#F5F5F0</color>
+    <color name="eco_text_dark">#1A2E1F</color>
+    <color name="eco_text_hint">#7A9E7E</color>
+    <color name="eco_input_stroke">#B0C4B1</color>
+    <color name="eco_divider">#C8D8CA</color>
 </resources>
