@@ -29,4 +29,6 @@
     <string name="cd_leaf_icon">EcoMap leaf icon</string>
     <string name="cd_profile_photo">Profile photo</string>
     <string name="cd_add_photo">Add profile photo</string>
+    <string name="default_web_client_id">1233</string>
+
 </resources>
