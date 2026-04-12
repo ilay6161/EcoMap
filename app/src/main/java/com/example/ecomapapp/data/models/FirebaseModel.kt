@@ -3,6 +3,7 @@ package com.example.ecomapapp.data.models
 import com.example.ecomapapp.base.Completion
 import com.example.ecomapapp.base.ReportsCompletion
 import com.example.ecomapapp.model.Report
+import com.example.ecomapapp.model.User
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -42,6 +43,21 @@ class FirebaseModel {
         db.collection("reports").document(reportId).delete()
             .addOnSuccessListener { completion() }
             .addOnFailureListener { completion() }
+    }
+
+    fun saveUser(user: User, completion: Completion) {
+        db.collection("users").document(user.id).set(user.toJson())
+            .addOnSuccessListener { completion() }
+            .addOnFailureListener { completion() }
+    }
+
+    fun getUser(userId: String, callback: (User?) -> Unit) {
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { doc ->
+                val user = doc.data?.let { User.fromJson(it) }
+                callback(user)
+            }
+            .addOnFailureListener { callback(null) }
     }
 
     fun getReportsSince(since: Long, callback: ReportsCompletion) {

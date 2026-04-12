@@ -1,16 +1,23 @@
 package com.example.ecomapapp
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Html
-import android.util.Patterns
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.example.ecomapapp.data.models.CloudinaryStorageModel
+import com.example.ecomapapp.data.models.FirebaseModel
 import com.example.ecomapapp.databinding.ActivityRegisterBinding
+import com.example.ecomapapp.model.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import android.util.Patterns
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -35,10 +42,8 @@ class RegisterActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // Set "Sign In" as bold in footer text
         binding.tvSignIn.text = Html.fromHtml(getString(R.string.have_account), Html.FROM_HTML_MODE_COMPACT)
 
-        // Terms checkbox controls the Create Account button
         binding.cbTerms.setOnCheckedChangeListener { _, isChecked ->
             binding.btnCreateAccount.isEnabled = isChecked
             binding.btnCreateAccount.alpha = if (isChecked) 1.0f else 0.5f
@@ -95,19 +100,59 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setDisplayName(name)
-                        .build()
-                    user?.updateProfile(profileUpdates)?.addOnCompleteListener {
-                        setLoading(false)
-                        navigateToMain()
+                    val user = auth.currentUser ?: return@addOnCompleteListener
+                    val bitmap = uriToBitmap(selectedPhotoUri)
+                    if (bitmap != null) {
+                        CloudinaryStorageModel.uploadImage(bitmap, "profile_${user.uid}") { photoUrl ->
+                            finishRegistration(user.uid, name, email, photoUrl)
+                        }
+                    } else {
+                        finishRegistration(user.uid, name, email, null)
                     }
                 } else {
                     setLoading(false)
                     showSnackbar(task.exception?.message ?: "Registration failed")
                 }
             }
+    }
+
+    private fun finishRegistration(uid: String, name: String, email: String, photoUrl: String?) {
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(name)
+            .apply { if (!photoUrl.isNullOrEmpty()) setPhotoUri(android.net.Uri.parse(photoUrl)) }
+            .build()
+
+        auth.currentUser?.updateProfile(profileUpdates)?.addOnCompleteListener {
+            val userDoc = User(
+                id = uid,
+                name = name,
+                email = email,
+                phone = "",
+                photoUrl = photoUrl
+            )
+            FirebaseModel().saveUser(userDoc) {
+                setLoading(false)
+                navigateToMain()
+            }
+        }
+    }
+
+    private fun uriToBitmap(uri: Uri?): Bitmap? {
+        uri ?: return null
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val source = ImageDecoder.createSource(contentResolver, uri)
+                ImageDecoder.decodeBitmap(source) { decoder, _, _ ->
+                    decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
+                    decoder.isMutableRequired = true
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                MediaStore.Images.Media.getBitmap(contentResolver, uri)
+            }
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun setLoading(loading: Boolean) {
