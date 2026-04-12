@@ -31,4 +31,34 @@
     <string name="cd_add_photo">Add profile photo</string>
     <string name="default_web_client_id">1233</string>
 
+    <!-- Create Report -->
+    <string name="new_report">New Report</string>
+    <string name="add_photo_label">Add Photo *</string>
+    <string name="tap_to_take_photo">Tap to take a photo</string>
+    <string name="btn_camera">Camera</string>
+    <string name="btn_gallery">Gallery</string>
+    <string name="label_title">Title *</string>
+    <string name="hint_title">Brief description of the issue</string>
+    <string name="label_category">Category *</string>
+    <string name="category_litter">Litter</string>
+    <string name="category_water_leak">Water Leak</string>
+    <string name="category_illegal_dumping">Illegal\nDumping</string>
+    <string name="category_infrastructure">Infrastructure</string>
+    <string name="category_pollution">Pollution</string>
+    <string name="category_other">Other</string>
+    <string name="label_description">Description *</string>
+    <string name="hint_description">Provide more details about the environmental issue…</string>
+    <string name="label_location">Location</string>
+    <string name="current_location">Current Location</string>
+    <string name="detecting_location">Detecting location…</string>
+    <string name="btn_submit_report">Submit Report</string>
+    <string name="error_photo_required">Please add a photo</string>
+    <string name="error_title_required">Title is required</string>
+    <string name="error_category_required">Please select a category</string>
+    <string name="error_description_required">Description is required</string>
+    <string name="error_location_unavailable">Could not detect location</string>
+    <string name="report_submitted">Report submitted successfully!</string>
+    <string name="error_upload_failed">Image upload failed. Please try again.</string>
+    <string name="error_submit_failed">Failed to submit report. Please try again.</string>
+
 </resources>

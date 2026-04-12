@@ -12,4 +12,18 @@
     <color name="eco_text_hint">#7A9E7E</color>
     <color name="eco_input_stroke">#B0C4B1</color>
     <color name="eco_divider">#C8D8CA</color>
+
+    <!-- Category/Status colors -->
+    <color name="eco_status_pending">#FF9800</color>
+    <color name="eco_status_verified">#4CAF50</color>
+    <color name="eco_status_resolved">#2196F3</color>
+    <color name="eco_pin_litter">#FF9800</color>
+    <color name="eco_pin_leak">#2196F3</color>
+    <color name="eco_pin_dumping">#F44336</color>
+
+    <!-- Create Report -->
+    <color name="eco_category_selected">#2D5A42</color>
+    <color name="eco_category_default">#F0F5F1</color>
+    <color name="eco_required_asterisk">#D32F2F</color>
+    <color name="eco_background">#F5F5F5</color>
 </resources>
