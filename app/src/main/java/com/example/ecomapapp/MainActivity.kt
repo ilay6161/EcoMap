@@ -1,10 +1,11 @@
 package com.example.ecomapapp
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.example.ecomapapp.databinding.ActivityMainBinding
-import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,18 +16,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val user = FirebaseAuth.getInstance().currentUser
-        user?.let {
-            val name = it.displayName?.takeIf { n -> n.isNotBlank() } ?: it.email ?: "User"
-            binding.tvWelcome.text = "Welcome, $name!"
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        NavigationUI.setupWithNavController(binding.bottomNav, navController)
+
+        binding.fabCreateReport.setOnClickListener {
+            navController.navigate(R.id.createReportFragment)
         }
 
-        binding.btnSignOut.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            startActivity(Intent(this, LoginActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            })
-            finish()
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.createReportFragment -> {
+                    binding.bottomNav.visibility = View.GONE
+                    binding.fabCreateReport.visibility = View.GONE
+                }
+                else -> {
+                    binding.bottomNav.visibility = View.VISIBLE
+                    binding.fabCreateReport.visibility = View.VISIBLE
+                }
+            }
         }
     }
 }
