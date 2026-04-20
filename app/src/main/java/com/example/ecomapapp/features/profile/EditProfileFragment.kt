@@ -1,5 +1,7 @@
 package com.example.ecomapapp.features.profile
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.os.Build
@@ -9,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.ecomapapp.dao.AppLocalDB
@@ -41,6 +45,13 @@ class EditProfileFragment : Fragment() {
             capturedBitmap = it
             showPhotoPreview(it)
         }
+    }
+
+    private val cameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) cameraLauncher.launch(null)
+        else Snackbar.make(binding.root, "Camera permission is required to take a photo", Snackbar.LENGTH_SHORT).show()
     }
 
     private val galleryLauncher = registerForActivityResult(
@@ -112,12 +123,32 @@ class EditProfileFragment : Fragment() {
         binding.btnCancel.setOnClickListener { findNavController().popBackStack() }
 
         binding.photoContainer.setOnClickListener {
-            galleryLauncher.launch("image/*")
+            showPhotoSourceDialog()
         }
 
         binding.btnSave.setOnClickListener {
             saveProfile()
         }
+    }
+
+    private fun showPhotoSourceDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Profile Photo")
+            .setItems(arrayOf("Take Photo", "Choose from Gallery")) { _, which ->
+                when (which) {
+                    0 -> {
+                        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                            == PackageManager.PERMISSION_GRANTED
+                        ) {
+                            cameraLauncher.launch(null)
+                        } else {
+                            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                        }
+                    }
+                    1 -> galleryLauncher.launch("image/*")
+                }
+            }
+            .show()
     }
 
     private fun loadPhoto(url: String) {
