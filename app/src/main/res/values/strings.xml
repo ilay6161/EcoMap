@@ -61,4 +61,14 @@
     <string name="error_upload_failed">Image upload failed. Please try again.</string>
     <string name="error_submit_failed">Failed to submit report. Please try again.</string>
 
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="label_phone">Phone Number</string>
+    <string name="hint_phone">Enter your phone number</string>
+    <string name="email_readonly_hint">Email cannot be changed</string>
+    <string name="btn_save_changes">Save Changes</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="profile_saved">Profile updated successfully</string>
+
 </resources>
