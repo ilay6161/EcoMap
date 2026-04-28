@@ -67,4 +67,15 @@ class ReportsRepository {
             }
         }
     }
+
+    fun updateReport(report: Report, completion: Completion) {
+        firebaseModel.updateReport(report) {
+            executor.execute {
+                dao.insertReports(report)
+                Handler(Looper.getMainLooper()).post {
+                    completion()
+                }
+            }
+        }
+    }
 }
