@@ -78,4 +78,24 @@ class ReportsRepository {
             }
         }
     }
+
+    fun incrementVerifyCount(report: Report, completion: Completion) {
+        val updated = report.copy(verifyCount = report.verifyCount + 1)
+        firebaseModel.updateReport(updated) {
+            executor.execute {
+                dao.insertReports(updated)
+                Handler(Looper.getMainLooper()).post { completion() }
+            }
+        }
+    }
+
+    fun markResolved(report: Report, completion: Completion) {
+        val updated = report.copy(status = Report.STATUS_RESOLVED)
+        firebaseModel.updateReport(updated) {
+            executor.execute {
+                dao.insertReports(updated)
+                Handler(Looper.getMainLooper()).post { completion() }
+            }
+        }
+    }
 }
