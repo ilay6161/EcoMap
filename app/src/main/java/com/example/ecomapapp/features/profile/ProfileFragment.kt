@@ -38,6 +38,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
         }
 
+        binding.cardMyReports.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_myReportsFragment)
+        }
+
         binding.btnSignOut.setOnClickListener {
             authModel.signOut()
             startActivity(Intent(requireContext(), LoginActivity::class.java).apply {
