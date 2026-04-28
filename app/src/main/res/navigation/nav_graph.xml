@@ -9,13 +9,21 @@
         android:id="@+id/mapFragment"
         android:name="com.example.ecomapapp.features.map.MapFragment"
         android:label="Map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment_to_reportDetailFragment"
+            app:destination="@id/reportDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/feedFragment"
         android:name="com.example.ecomapapp.features.feed.FeedFragment"
         android:label="Feed"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/action_feedFragment_to_reportDetailFragment"
+            app:destination="@id/reportDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
@@ -38,5 +46,15 @@
         android:name="com.example.ecomapapp.features.create_report.CreateReportFragment"
         android:label="New Report"
         tools:layout="@layout/fragment_create_report" />
+
+    <fragment
+        android:id="@+id/reportDetailFragment"
+        android:name="com.example.ecomapapp.features.report_detail.ReportDetailFragment"
+        android:label="Report Detail"
+        tools:layout="@layout/fragment_report_detail">
+        <argument
+            android:name="reportId"
+            app:argType="string" />
+    </fragment>
 
 </navigation>
