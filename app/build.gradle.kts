@@ -79,6 +79,13 @@ dependencies {
     // SwipeRefreshLayout
     implementation(libs.swiperefreshlayout)
 
+    // RecyclerView
+    implementation(libs.recyclerview)
+
+    // ViewModel + Fragment KTX
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.fragment.ktx)
+
     // Location
     implementation(libs.play.services.location)
 
