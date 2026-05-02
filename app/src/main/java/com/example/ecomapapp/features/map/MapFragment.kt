@@ -3,12 +3,16 @@ package com.example.ecomapapp.features.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,6 +23,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -37,6 +42,7 @@ class MapFragment : Fragment() {
     private val markers = mutableListOf<Marker>()
     private var pendingReports: List<Report>? = null
     private var hasFitBoundsOnce = false
+    private val pinCache = mutableMapOf<String, BitmapDescriptor>()
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -132,7 +138,7 @@ class MapFragment : Fragment() {
                     .position(position)
                     .title(report.title)
                     .snippet(report.locationName)
-                    .icon(BitmapDescriptorFactory.defaultMarker(hueFor(report.category)))
+                    .icon(pinFor(report.category))
             ) ?: return@forEach
             marker.tag = report.id
             markers += marker
@@ -151,13 +157,51 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun hueFor(category: String): Float = when (category) {
-        Report.CATEGORY_LITTER -> BitmapDescriptorFactory.HUE_ORANGE
-        Report.CATEGORY_WATER_LEAK -> BitmapDescriptorFactory.HUE_AZURE
-        Report.CATEGORY_ILLEGAL_DUMPING -> BitmapDescriptorFactory.HUE_RED
-        Report.CATEGORY_INFRASTRUCTURE -> BitmapDescriptorFactory.HUE_GREEN
-        Report.CATEGORY_POLLUTION -> BitmapDescriptorFactory.HUE_VIOLET
-        else -> BitmapDescriptorFactory.HUE_GREEN
+    private fun pinFor(category: String): BitmapDescriptor {
+        pinCache[category]?.let { return it }
+
+        val ctx = requireContext()
+        val density = resources.displayMetrics.density
+        val pinW = (32 * density).toInt()
+        val pinH = (42 * density).toInt()
+        val iconSize = (14 * density).toInt()
+        val iconLeft = (pinW - iconSize) / 2
+        val iconTop = (7 * density).toInt()
+
+        val pin = ContextCompat.getDrawable(ctx, R.drawable.ic_map_pin_base)!!.mutate()
+        DrawableCompat.setTint(pin, ContextCompat.getColor(ctx, pinColorRes(category)))
+
+        val icon = ContextCompat.getDrawable(ctx, iconResFor(category))!!.mutate()
+        DrawableCompat.setTint(icon, Color.WHITE)
+
+        val bitmap = Bitmap.createBitmap(pinW, pinH, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        pin.setBounds(0, 0, pinW, pinH)
+        pin.draw(canvas)
+        icon.setBounds(iconLeft, iconTop, iconLeft + iconSize, iconTop + iconSize)
+        icon.draw(canvas)
+
+        val descriptor = BitmapDescriptorFactory.fromBitmap(bitmap)
+        pinCache[category] = descriptor
+        return descriptor
+    }
+
+    private fun pinColorRes(category: String): Int = when (category) {
+        Report.CATEGORY_LITTER -> R.color.eco_pin_litter
+        Report.CATEGORY_WATER_LEAK -> R.color.eco_pin_leak
+        Report.CATEGORY_ILLEGAL_DUMPING -> R.color.eco_pin_dumping
+        Report.CATEGORY_INFRASTRUCTURE -> R.color.eco_dark_green
+        Report.CATEGORY_POLLUTION -> R.color.eco_medium_green
+        else -> R.color.eco_dark_green
+    }
+
+    private fun iconResFor(category: String): Int = when (category) {
+        Report.CATEGORY_LITTER -> R.drawable.ic_category_litter
+        Report.CATEGORY_WATER_LEAK -> R.drawable.ic_category_water_leak
+        Report.CATEGORY_ILLEGAL_DUMPING -> R.drawable.ic_category_dumping
+        Report.CATEGORY_INFRASTRUCTURE -> R.drawable.ic_category_infrastructure
+        Report.CATEGORY_POLLUTION -> R.drawable.ic_category_pollution
+        else -> R.drawable.ic_category_other
     }
 
     private fun hasLocationPermission(): Boolean {
