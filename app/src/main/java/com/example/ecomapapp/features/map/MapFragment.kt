@@ -190,9 +190,9 @@ class MapFragment : Fragment() {
         Report.CATEGORY_LITTER -> R.color.eco_pin_litter
         Report.CATEGORY_WATER_LEAK -> R.color.eco_pin_leak
         Report.CATEGORY_ILLEGAL_DUMPING -> R.color.eco_pin_dumping
-        Report.CATEGORY_INFRASTRUCTURE -> R.color.eco_dark_green
-        Report.CATEGORY_POLLUTION -> R.color.eco_medium_green
-        else -> R.color.eco_dark_green
+        Report.CATEGORY_INFRASTRUCTURE -> R.color.eco_pin_infrastructure
+        Report.CATEGORY_POLLUTION -> R.color.eco_pin_pollution
+        else -> R.color.eco_pin_other
     }
 
     private fun iconResFor(category: String): Int = when (category) {

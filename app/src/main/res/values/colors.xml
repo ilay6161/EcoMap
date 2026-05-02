@@ -20,6 +20,9 @@
     <color name="eco_pin_litter">#FF9800</color>
     <color name="eco_pin_leak">#2196F3</color>
     <color name="eco_pin_dumping">#F44336</color>
+    <color name="eco_pin_infrastructure">#FFC107</color>
+    <color name="eco_pin_pollution">#9C27B0</color>
+    <color name="eco_pin_other">#607D8B</color>
 
     <!-- Create Report -->
     <color name="eco_category_selected">#2D5A42</color>

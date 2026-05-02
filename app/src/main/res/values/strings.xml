@@ -101,6 +101,9 @@
     <string name="map_legend_litter">Litter</string>
     <string name="map_legend_leak">Leak</string>
     <string name="map_legend_dumping">Dumping</string>
+    <string name="map_legend_infrastructure">Infrastructure</string>
+    <string name="map_legend_pollution">Pollution</string>
+    <string name="map_legend_other">Other</string>
     <string name="map_permission_rationale">Location permission is required to show your position on the map.</string>
 
 </resources>
