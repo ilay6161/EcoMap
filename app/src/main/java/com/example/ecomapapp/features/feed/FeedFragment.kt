@@ -174,11 +174,11 @@ class ReportAdapter(
                 Report.CATEGORY_ILLEGAL_DUMPING ->
                     Triple(R.drawable.ic_category_dumping, R.color.eco_pin_dumping, "Dumping")
                 Report.CATEGORY_INFRASTRUCTURE ->
-                    Triple(R.drawable.ic_category_infrastructure, R.color.eco_dark_green, "Infrastructure")
+                    Triple(R.drawable.ic_category_infrastructure, R.color.eco_pin_infrastructure, "Infrastructure")
                 Report.CATEGORY_POLLUTION ->
-                    Triple(R.drawable.ic_category_pollution, R.color.eco_medium_green, "Pollution")
+                    Triple(R.drawable.ic_category_pollution, R.color.eco_pin_pollution, "Pollution")
                 else ->
-                    Triple(R.drawable.ic_category_other, R.color.eco_text_hint, "Other")
+                    Triple(R.drawable.ic_category_other, R.color.eco_pin_other, "Other")
             }
             b.rowCategoryIcon.setImageResource(iconRes)
             b.rowCategoryIcon.imageTintList =
@@ -212,11 +212,11 @@ class ReportAdapter(
                 Report.CATEGORY_ILLEGAL_DUMPING ->
                     R.drawable.ic_category_dumping to R.color.eco_pin_dumping
                 Report.CATEGORY_INFRASTRUCTURE ->
-                    R.drawable.ic_category_infrastructure to R.color.eco_dark_green
+                    R.drawable.ic_category_infrastructure to R.color.eco_pin_infrastructure
                 Report.CATEGORY_POLLUTION ->
-                    R.drawable.ic_category_pollution to R.color.eco_medium_green
+                    R.drawable.ic_category_pollution to R.color.eco_pin_pollution
                 else ->
-                    R.drawable.ic_category_other to R.color.eco_text_hint
+                    R.drawable.ic_category_other to R.color.eco_pin_other
             }
 
             if (!report.photoUrl.isNullOrBlank()) {
