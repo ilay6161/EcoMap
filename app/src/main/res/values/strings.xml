@@ -95,4 +95,15 @@
     <string name="btn_sign_out">Sign Out</string>
     <string name="profile_saved">Profile updated successfully</string>
 
+    <!-- Map -->
+    <string name="map_search_hint">Search locations…</string>
+    <string name="map_locate_me">My location</string>
+    <string name="map_filter">Filter categories</string>
+    <string name="map_legend_title">Legend</string>
+    <string name="map_legend_litter">Litter</string>
+    <string name="map_legend_leak">Leak</string>
+    <string name="map_legend_dumping">Dumping</string>
+    <string name="map_permission_rationale">Location permission is required to show your position on the map.</string>
+    <string name="map_filter_show_all">Show all</string>
+
 </resources>
