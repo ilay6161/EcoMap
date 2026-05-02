@@ -37,6 +37,7 @@ class MyReportsFragment : Fragment() {
         viewModel = ViewModelProvider(this)[MyReportsViewModel::class.java]
 
         adapter = MyReportAdapter(
+            onItemClick = { report -> navigateToDetail(report) },
             onEditClick = { report -> navigateToEdit(report) },
             onDeleteClick = { report -> confirmDelete(report) }
         )
@@ -69,6 +70,12 @@ class MyReportsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.refresh()
+    }
+
+    private fun navigateToDetail(report: Report) {
+        findNavController().navigate(
+            MyReportsFragmentDirections.actionMyReportsFragmentToReportDetailFragment(report.id)
+        )
     }
 
     private fun navigateToEdit(report: Report) {

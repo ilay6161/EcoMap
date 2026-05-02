@@ -16,6 +16,7 @@ import java.util.Date
 import java.util.Locale
 
 class MyReportAdapter(
+    private val onItemClick: (Report) -> Unit,
     private val onEditClick: (Report) -> Unit,
     private val onDeleteClick: (Report) -> Unit
 ) : ListAdapter<Report, MyReportAdapter.ViewHolder>(DiffCallback()) {
@@ -58,6 +59,7 @@ class MyReportAdapter(
                 binding.ivThumbnail.setImageResource(R.drawable.ic_category_other)
             }
 
+            binding.root.setOnClickListener { onItemClick(report) }
             binding.btnEdit.setOnClickListener { onEditClick(report) }
             binding.btnDelete.setOnClickListener { onDeleteClick(report) }
         }

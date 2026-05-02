@@ -58,6 +58,9 @@
         <action
             android:id="@+id/action_myReportsFragment_to_editReportFragment"
             app:destination="@id/editReportFragment" />
+        <action
+            android:id="@+id/action_myReportsFragment_to_reportDetailFragment"
+            app:destination="@id/reportDetailFragment" />
     </fragment>
 
     <fragment
