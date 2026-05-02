@@ -4,20 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.util.Patterns
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.credentials.CredentialManager
-import androidx.credentials.GetCredentialRequest
-import androidx.credentials.exceptions.GetCredentialCancellationException
-import androidx.credentials.exceptions.GetCredentialException
-import androidx.lifecycle.lifecycleScope
 import com.example.ecomapapp.databinding.ActivityLoginBinding
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
@@ -31,7 +21,6 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // Set "Sign Up" as bold in the footer text
         binding.tvSignUp.text = Html.fromHtml(getString(R.string.no_account), Html.FROM_HTML_MODE_COMPACT)
 
         binding.btnSignIn.setOnClickListener {
@@ -40,10 +29,6 @@ class LoginActivity : AppCompatActivity() {
             if (validateInputs(email, password)) {
                 signInWithEmail(email, password)
             }
-        }
-
-        binding.btnGoogle.setOnClickListener {
-            signInWithGoogle()
         }
 
         binding.tvForgotPassword.setOnClickListener {
@@ -97,49 +82,8 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun signInWithGoogle() {
-        val credentialManager = CredentialManager.create(this)
-
-        val googleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(getString(R.string.default_web_client_id))
-            .setAutoSelectEnabled(false)
-            .build()
-
-        val request = GetCredentialRequest(listOf(googleIdOption))
-
-        lifecycleScope.launch {
-            try {
-                val result = credentialManager.getCredential(
-                    context = this@LoginActivity,
-                    request = request
-                )
-                val credential = result.credential
-                val googleIdToken = GoogleIdTokenCredential.createFrom(credential.data)
-                val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken.idToken, null)
-
-                setLoading(true)
-                auth.signInWithCredential(firebaseCredential)
-                    .addOnCompleteListener(this@LoginActivity) { task ->
-                        setLoading(false)
-                        if (task.isSuccessful) {
-                            navigateToMain()
-                        } else {
-                            showSnackbar(task.exception?.message ?: "Google sign in failed")
-                        }
-                    }
-            } catch (e: GetCredentialCancellationException) {
-                // User cancelled — do nothing
-            } catch (e: GetCredentialException) {
-                showSnackbar("Google sign in unavailable: ${e.message}")
-            }
-        }
-    }
-
     private fun setLoading(loading: Boolean) {
         binding.btnSignIn.isEnabled = !loading
-        binding.btnGoogle.isClickable = !loading
-        binding.btnGoogle.isFocusable = !loading
     }
 
     private fun navigateToMain() {
