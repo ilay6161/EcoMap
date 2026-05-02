@@ -78,6 +78,13 @@
     <string name="report_updated">Report updated successfully!</string>
     <string name="location_readonly_hint">Location cannot be changed</string>
 
+    <!-- Feed -->
+    <string name="feed_heading">Recent Reports</string>
+    <string name="search_reports_hint">Search reports…</string>
+    <string name="chip_all">All</string>
+    <string name="chip_leaks">Leaks</string>
+    <string name="chip_dumping">Dumping</string>
+
     <!-- Edit Profile -->
     <string name="edit_profile_title">Edit Profile</string>
     <string name="label_phone">Phone Number</string>
