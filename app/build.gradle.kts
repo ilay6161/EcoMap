@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -16,6 +18,14 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        val mapsKey = project.rootProject.file("local.properties").let { f ->
+            if (f.exists()) {
+                Properties().apply { f.inputStream().use { load(it) } }
+                    .getProperty("MAPS_API_KEY", "")
+            } else ""
+        }
+        manifestPlaceholders["MAPS_API_KEY"] = mapsKey
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -88,6 +98,10 @@ dependencies {
 
     // Location
     implementation(libs.play.services.location)
+
+    // Google Maps
+    implementation(libs.play.services.maps)
+    implementation(libs.android.maps.utils)
 
     // Test
     testImplementation(libs.junit)
