@@ -4,12 +4,9 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -94,23 +91,13 @@ class MapFragment : Fragment() {
             pendingReports?.let { renderMarkers(it) }
         }
 
-        viewModel.filteredReports.observe(viewLifecycleOwner) { reports ->
+        viewModel.reports.observe(viewLifecycleOwner) { reports ->
             if (googleMap == null) {
                 pendingReports = reports
             } else {
                 renderMarkers(reports)
             }
         }
-
-        binding.etMapSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.searchQuery.value = s?.toString() ?: ""
-            }
-        })
-
-        binding.btnFilter.setOnClickListener { showFilterMenu(it) }
 
         binding.btnLocateMe.setOnClickListener {
             if (hasLocationPermission()) {
@@ -171,28 +158,6 @@ class MapFragment : Fragment() {
         Report.CATEGORY_INFRASTRUCTURE -> BitmapDescriptorFactory.HUE_GREEN
         Report.CATEGORY_POLLUTION -> BitmapDescriptorFactory.HUE_VIOLET
         else -> BitmapDescriptorFactory.HUE_GREEN
-    }
-
-    private fun showFilterMenu(anchor: View) {
-        val popup = PopupMenu(requireContext(), anchor)
-        viewModel.allCategories.forEachIndexed { index, (categoryKey, label) ->
-            val item = popup.menu.add(0, index, index, label)
-            item.isCheckable = true
-            item.isChecked = categoryKey in viewModel.selectedCategories.value.orEmpty()
-        }
-        val showAllId = viewModel.allCategories.size
-        popup.menu.add(0, showAllId, showAllId, getString(R.string.map_filter_show_all))
-
-        popup.setOnMenuItemClickListener { item ->
-            if (item.itemId == showAllId) {
-                viewModel.clearCategoryFilter()
-            } else {
-                val (categoryKey, _) = viewModel.allCategories[item.itemId]
-                viewModel.toggleCategory(categoryKey)
-            }
-            true
-        }
-        popup.show()
     }
 
     private fun hasLocationPermission(): Boolean {
