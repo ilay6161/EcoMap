@@ -40,7 +40,6 @@ class MapFragment : Fragment() {
     private val markers = mutableListOf<Marker>()
     private var pendingReports: List<Report>? = null
     private var hasFitBoundsOnce = false
-    private var isFirstLoad = true
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -91,6 +90,7 @@ class MapFragment : Fragment() {
                 true
             }
 
+            binding.mapProgressBar.visibility = View.GONE
             pendingReports?.let { renderMarkers(it) }
         }
 
@@ -99,10 +99,6 @@ class MapFragment : Fragment() {
                 pendingReports = reports
             } else {
                 renderMarkers(reports)
-            }
-            if (isFirstLoad) {
-                binding.mapProgressBar.visibility = View.GONE
-                isFirstLoad = false
             }
         }
 
