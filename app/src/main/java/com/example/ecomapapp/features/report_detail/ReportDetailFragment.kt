@@ -160,7 +160,9 @@ class ReportDetailFragment : Fragment() {
             Report.CATEGORY_LITTER -> com.example.ecomapapp.R.color.eco_pin_litter
             Report.CATEGORY_WATER_LEAK -> com.example.ecomapapp.R.color.eco_pin_leak
             Report.CATEGORY_ILLEGAL_DUMPING -> com.example.ecomapapp.R.color.eco_pin_dumping
-            else -> com.example.ecomapapp.R.color.eco_dark_green
+            Report.CATEGORY_INFRASTRUCTURE -> com.example.ecomapapp.R.color.eco_pin_infrastructure
+            Report.CATEGORY_POLLUTION -> com.example.ecomapapp.R.color.eco_pin_pollution
+            else -> com.example.ecomapapp.R.color.eco_pin_other
         }
         return requireContext().getColor(colorRes)
     }
