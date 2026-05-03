@@ -27,29 +27,6 @@
             android:contentDescription="Back"
             android:src="@android:drawable/ic_media_previous"
             android:tint="@color/eco_text_dark" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <ImageButton
-            android:id="@+id/btnShare"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Share"
-            android:src="@android:drawable/ic_menu_share"
-            android:tint="@color/eco_text_dark" />
-
-        <ImageButton
-            android:id="@+id/btnFlag"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Flag"
-            android:src="@android:drawable/ic_menu_report_image"
-            android:tint="@color/eco_text_dark" />
     </LinearLayout>
 
     <!-- Loading spinner -->
@@ -82,15 +59,16 @@
             <!-- Photo + category badge -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="240dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/photoImage"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="#E0E0E0"
                     android:contentDescription="Report photo"
-                    android:scaleType="centerCrop" />
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
 
                 <TextView
                     android:id="@+id/categoryBadge"
@@ -284,7 +262,7 @@
                         android:layout_marginEnd="6dp"
                         android:layout_weight="1"
                         app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp">
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -325,7 +303,7 @@
                         android:layout_marginHorizontal="3dp"
                         android:layout_weight="1"
                         app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp">
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -366,7 +344,7 @@
                         android:layout_marginStart="6dp"
                         android:layout_weight="1"
                         app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp">
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"

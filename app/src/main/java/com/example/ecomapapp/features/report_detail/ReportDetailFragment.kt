@@ -42,10 +42,6 @@ class ReportDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnBack.setOnClickListener { findNavController().popBackStack() }
-        binding.btnShare.setOnClickListener { shareReport() }
-        binding.btnFlag.setOnClickListener {
-            Snackbar.make(binding.root, "Report flagged", Snackbar.LENGTH_SHORT).show()
-        }
 
         viewModel.getReport(args.reportId).observe(viewLifecycleOwner) { report ->
             if (report == null) return@observe
