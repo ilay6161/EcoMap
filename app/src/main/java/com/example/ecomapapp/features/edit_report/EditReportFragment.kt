@@ -23,6 +23,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.ecomapapp.R
 import com.example.ecomapapp.data.models.StorageModel
 import com.example.ecomapapp.data.repository.reports.ReportsRepository
+import com.example.ecomapapp.databinding.DialogConfirmDeleteBinding
 import com.example.ecomapapp.databinding.FragmentEditReportBinding
 import com.example.ecomapapp.model.Report
 import com.google.android.material.snackbar.Snackbar
@@ -261,19 +262,23 @@ class EditReportFragment : Fragment() {
 
     private fun confirmDelete() {
         val report = currentReport ?: return
-        AlertDialog.Builder(requireContext())
-            .setTitle(R.string.delete_report_title)
-            .setMessage(R.string.delete_report_message)
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                setLoading(true)
-                ReportsRepository.shared.deleteReport(report) {
-                    if (_binding == null) return@deleteReport
-                    setLoading(false)
-                    findNavController().popBackStack()
-                }
+        val dialogBinding = DialogConfirmDeleteBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(true)
+            .create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialogBinding.btnCancel.setOnClickListener { dialog.dismiss() }
+        dialogBinding.btnDelete.setOnClickListener {
+            dialog.dismiss()
+            setLoading(true)
+            ReportsRepository.shared.deleteReport(report) {
+                if (_binding == null) return@deleteReport
+                setLoading(false)
+                findNavController().popBackStack()
             }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        }
+        dialog.show()
     }
 
     private fun setLoading(loading: Boolean) {
