@@ -5,9 +5,12 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.ImageDecoder
+import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
@@ -231,21 +234,27 @@ class CreateReportFragment : Fragment() {
     }
 
     private fun reverseGeocode(lat: Double, lon: Double) {
-        try {
-            val geocoder = Geocoder(requireContext(), Locale.getDefault())
-            @Suppress("DEPRECATION")
-            val addresses = geocoder.getFromLocation(lat, lon, 1)
-            if (!addresses.isNullOrEmpty()) {
-                currentLocationName = addresses[0].getAddressLine(0) ?: "Unknown"
-            } else {
-                currentLocationName = "Unknown location"
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        val mainHandler = Handler(Looper.getMainLooper())
+        geocoder.getFromLocation(lat, lon, 1, object : Geocoder.GeocodeListener {
+            override fun onGeocode(addresses: MutableList<Address>) {
+                mainHandler.post {
+                    if (_binding == null) return@post
+                    currentLocationName = addresses.firstOrNull()
+                        ?.getAddressLine(0)
+                        ?: "Unknown location"
+                    updateLocationUI()
+                }
             }
-        } catch (e: Exception) {
-            currentLocationName = "Unknown location"
-        }
-        if (_binding != null) {
-            updateLocationUI()
-        }
+
+            override fun onError(errorMessage: String?) {
+                mainHandler.post {
+                    if (_binding == null) return@post
+                    currentLocationName = "Unknown location"
+                    updateLocationUI()
+                }
+            }
+        })
     }
 
     private fun updateLocationUI() {
