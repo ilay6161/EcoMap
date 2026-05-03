@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import com.example.ecomapapp.databinding.DialogConfirmDeleteBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -85,19 +86,23 @@ class MyReportsFragment : Fragment() {
     }
 
     private fun confirmDelete(report: Report) {
-        AlertDialog.Builder(requireContext())
-            .setTitle(R.string.delete_report_title)
-            .setMessage(R.string.delete_report_message)
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                binding.progressBar.visibility = View.VISIBLE
-                ReportsRepository.shared.deleteReport(report) {
-                    if (_binding == null) return@deleteReport
-                    binding.progressBar.visibility = View.GONE
-                    Snackbar.make(binding.root, R.string.report_deleted, Snackbar.LENGTH_SHORT).show()
-                }
+        val dialogBinding = DialogConfirmDeleteBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(true)
+            .create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialogBinding.btnCancel.setOnClickListener { dialog.dismiss() }
+        dialogBinding.btnDelete.setOnClickListener {
+            dialog.dismiss()
+            binding.progressBar.visibility = View.VISIBLE
+            ReportsRepository.shared.deleteReport(report) {
+                if (_binding == null) return@deleteReport
+                binding.progressBar.visibility = View.GONE
+                Snackbar.make(binding.root, R.string.report_deleted, Snackbar.LENGTH_SHORT).show()
             }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        }
+        dialog.show()
     }
 
     override fun onDestroyView() {
