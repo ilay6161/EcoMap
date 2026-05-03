@@ -26,16 +26,21 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.createReportFragment)
         }
 
+        val hideNavDestinations = setOf(
+            R.id.splashFragment,
+            R.id.loginFragment,
+            R.id.registerFragment,
+            R.id.createReportFragment,
+            R.id.reportDetailFragment
+        )
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.createReportFragment, R.id.reportDetailFragment -> {
-                    binding.bottomNav.visibility = View.GONE
-                    binding.fabCreateReport.visibility = View.GONE
-                }
-                else -> {
-                    binding.bottomNav.visibility = View.VISIBLE
-                    binding.fabCreateReport.visibility = View.VISIBLE
-                }
+            if (destination.id in hideNavDestinations) {
+                binding.bottomNav.visibility = View.GONE
+                binding.fabCreateReport.visibility = View.GONE
+            } else {
+                binding.bottomNav.visibility = View.VISIBLE
+                binding.fabCreateReport.visibility = View.VISIBLE
             }
         }
     }

@@ -1,13 +1,11 @@
 package com.example.ecomapapp.features.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.ecomapapp.LoginActivity
 import com.example.ecomapapp.R
 import com.example.ecomapapp.data.models.FirebaseAuthModel
 import com.example.ecomapapp.data.models.FirebaseModel
@@ -44,9 +42,7 @@ class ProfileFragment : Fragment() {
 
         binding.cardSignOut.setOnClickListener {
             authModel.signOut()
-            startActivity(Intent(requireContext(), LoginActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            })
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
     }
 
