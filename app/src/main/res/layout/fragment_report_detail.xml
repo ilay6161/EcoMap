@@ -59,16 +59,16 @@
             <!-- Photo + category badge -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/photoImage"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="#E0E0E0"
                     android:contentDescription="Report photo"
                     android:adjustViewBounds="true"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="fitXY" />
 
                 <TextView
                     android:id="@+id/categoryBadge"
